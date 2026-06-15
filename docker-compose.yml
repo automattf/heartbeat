@@ -1,0 +1,27 @@
+services:
+  heartbeat:
+    image: ghcr.io/automattf/heartbeat:latest
+    # Or build locally:
+    # build: .
+    container_name: heartbeat
+    restart: unless-stopped
+    environment:
+      # Required: comma-separated URLs to monitor
+      - MONITOR_URLS=${MONITOR_URLS}
+      # Required: Slack webhook (or configure email below)
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      # Alert only after sustained failure (default: 300s / 5 min)
+      - ALERT_AFTER_SECONDS=${ALERT_AFTER_SECONDS:-300}
+      # Check interval (default: 60s)
+      - CHECK_INTERVAL_SECONDS=${CHECK_INTERVAL_SECONDS:-60}
+      # Request timeout (default: 30s)
+      - REQUEST_TIMEOUT_SECONDS=${REQUEST_TIMEOUT_SECONDS:-30}
+      # Send a recovery alert when a URL comes back up (default: true)
+      - SEND_RECOVERY_ALERTS=${SEND_RECOVERY_ALERTS:-true}
+      # Optional email alerts (all required together to enable)
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - EMAIL_FROM=${EMAIL_FROM:-}
+      - EMAIL_TO=${EMAIL_TO:-}
